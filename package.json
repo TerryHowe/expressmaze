@@ -1,0 +1,22 @@
+{
+  "name": "expressmaze",
+  "version": "1.0.0",
+  "description": "Express 3D Maze",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/TerryHowe/expressmaze.git"
+  },
+  "author": "Terry Howe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TerryHowe/expressmaze/issues"
+  },
+  "homepage": "https://github.com/TerryHowe/expressmaze#readme",
+  "dependencies": {
+    "express": "^4.15.3"
+  }
+}
