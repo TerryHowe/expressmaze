@@ -24,6 +24,7 @@
     "mongodb": "^2.2.27",
     "morgan": "~1.8.1",
     "pug": "~2.0.0-beta11",
-    "serve-favicon": "~2.4.2"
+    "serve-favicon": "~2.4.2",
+    "textmaze": "^2.1.1"
   }
 }
