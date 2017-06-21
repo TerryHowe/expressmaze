@@ -75,120 +75,103 @@ MongoClient.connect('mongodb://billy:bob@ds161001.mlab.com:61001/maze', function
 
 class Maze {
 
-  constructor() {
+  constructor(x, y, direction) {
     this.textmaze = new TextMaze();
+    this.x = x;
+    this.y = y;
+    this.direction = direction;
   }
 
-  getRoom(x, y) {
-    return(rooms[x.toString() + "," + y.toString()]);
+  getRoom() {
+    return(rooms[this.x.toString() + "," + this.y.toString()]);
   }
 
-  render(x, y, direction) {
-    let room = this.getRoom(x, y);
+  render() {
+    let room = this.getRoom();
     if (typeof room === 'undefined') {
       this.header = 'no where';
       return 'nada';
     }
-    this.header = direction + " from " + room.getKey();
-    return(this.textmaze.render(room, direction));
+    this.header = this.direction + " from " + room.getKey();
+    return(this.textmaze.render(room, this.direction));
   }
 
-  handleKeyDown(e) {
-    switch (e.key) {
-    case 'w':
-      this.goForward();
-      this.view = this.render();
+  getLeft() {
+    let direction;
+    switch (this.direction) {
+    case 'N':
+      direction = 'W';
       break;
-    case 'a':
-      this.goLeft();
-      this.view = this.render();
+    case 'E':
+      direction = 'N';
       break;
-    case 's':
-      this.goBackward();
-      this.view = this.render();
-      break;
-    case 'd':
-      this.goRight();
-      this.view = this.render();
+    case 'S':
+      direction = 'E';
       break;
     default:
-      return;
+      direction = 'S';
+      break;
     }
-    return;
+    return("/maze/" + this.x + "/" + this.y + "/" + direction);
   }
 
-  goForward() {
+  getBackward() {
     let room = this.getRoom();
     if (typeof room === 'undefined') {
-      return;
-    }
-    let destination = room.goForward(this.direction)
-    if (typeof destination === 'undefined') {
-      return;
-    }
-    this.x = destination.x;
-    this.y = destination.y;
-  }
-
-  goBackward() {
-    let room = this.getRoom();
-    if (typeof room === 'undefined') {
-      return;
+      return('');
     }
     let destination = room.goBackward(this.direction)
     if (typeof destination === 'undefined') {
-      return;
+      return('');
     }
-    this.x = destination.x;
-    this.y = destination.y;
+    return("/maze/" + destination.x + "/" + destination.y + "/" + this.direction);
   }
 
-  goLeft() {
+  getRight() {
+    let direction;
     switch (this.direction) {
     case 'N':
-      this.direction = 'W';
+      direction = 'E';
       break;
     case 'E':
-      this.direction = 'N';
+      direction = 'S';
       break;
     case 'S':
-      this.direction = 'E';
+      direction = 'W';
       break;
     default:
-      this.direction = 'S';
+      direction = 'N';
       break;
     }
+    return("/maze/" + this.x + "/" + this.y + "/" + direction);
   }
 
-  goRight() {
-    switch (this.direction) {
-    case 'N':
-      this.direction = 'E';
-      break;
-    case 'E':
-      this.direction = 'S';
-      break;
-    case 'S':
-      this.direction = 'W';
-      break;
-    default:
-      this.direction = 'N';
-      break;
+  getForward() {
+    let room = this.getRoom();
+    if (typeof room === 'undefined') {
+      return('');
     }
+    let destination = room.goForward(this.direction)
+    if (typeof destination === 'undefined') {
+      return('');
+    }
+    return("/maze/" + destination.x + "/" + destination.y + "/" + this.direction);
   }
 }
+
  
 router.get('/:x/:y/:direction', function(req, res, next) {
+  maze = new Maze(req.params.x, req.params.y, req.params.direction);
   res.render('maze', {
     title: 'Express 3D Maze',
     params: req.params,
     nav: {
-        left: "/maze/0/0/S",
-        backward: "",
-        right: "/maze/0/0/N",
-        forward: "/maze/0/0/E"
+        left: maze.getLeft(),
+        backward: maze.getBackward(),
+        right: maze.getRight(),
+        forward: maze.getForward()
     },
-    textview: new Maze().render(req.params.x, req.params.y, req.params.direction)
+    textview: maze.render()
   });
 });
 
