@@ -1,5 +1,16 @@
 extends layout
 
 block content
+  script(src='/javascripts/nav.js')
   h1 Looking #{params.direction} from #{params.x},#{params.x}
+  script.
+    var forward = '#{nav.forward}';
+    var left = '#{nav.left}';
+    var right = '#{nav.right}';
+    var backward = '#{nav.backward}';
   pre #{textview}
+
+  div w: forward
+  div a: left
+  div d: right
+  div s: backward

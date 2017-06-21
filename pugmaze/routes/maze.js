@@ -182,6 +182,12 @@ router.get('/:x/:y/:direction', function(req, res, next) {
   res.render('maze', {
     title: 'Express 3D Maze',
     params: req.params,
+    nav: {
+        left: "/maze/0/0/S",
+        backward: "",
+        right: "/maze/0/0/N",
+        forward: "/maze/0/0/E"
+    },
     textview: new Maze().render(req.params.x, req.params.y, req.params.direction)
   });
 });
