@@ -4,7 +4,7 @@ var MongoClient = require('mongodb').MongoClient
 var TextMaze = require('textmaze').TextMaze
 
 var rooms = {}
-MongoClient.connect('mongodb://billy:bob@ds161001.mlab.com:61001/maze', function (err, db) {
+MongoClient.connect('mongodb://eddie:1L1M8vWhsiK2fvD7@maze-shard-00-00.k3aki.mongodb.net:27017,maze-shard-00-01.k3aki.mongodb.net:27017,maze-shard-00-02.k3aki.mongodb.net:27017/maze?ssl=true&replicaSet=atlas-2dai9a-shard-0&authSource=admin&retryWrites=true&w=majority', function (err, db) {
   if (err) throw err
   db.collection('rooms').find().toArray(function (err, result) {
     if (err) throw err
